@@ -16,13 +16,14 @@
         button:hover { background: #219150; }
         button:disabled { background: #95a5a6; cursor: not-allowed; }
         
+        /* Persistent Status Message Styling */
         #statusMsg { 
             margin-top: 15px; 
             padding: 12px; 
             border-radius: 4px; 
             text-align: center; 
             font-weight: bold; 
-            display: none;
+            display: none; /* Initially hidden */
             animation: fadeIn 0.5s;
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -142,12 +143,12 @@
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
         
+        // Clear status but keep area ready
         statusMsg.style.display = "none";
         btn.disabled = true;
         btn.innerHTML = "Submitting...";
 
         const formData = new FormData(form);
-        // Manual append for text-based date IDs
         formData.append("Marriage_Date", document.getElementById('mDate').value);
         formData.append("Boy_DOB", document.getElementById('bDOB').value);
         formData.append("Girl_DOB", document.getElementById('gDOB').value);
@@ -155,6 +156,7 @@
 
         fetch(scriptURL, { method: 'POST', body: formData })
             .then(res => {
+                // Change text and show success line
                 statusMsg.innerHTML = "Your data successfully submitted!";
                 statusMsg.className = "success";
                 statusMsg.style.display = "block";
@@ -162,7 +164,7 @@
                 btn.innerHTML = "Submit Data";
                 btn.disabled = false;
                 
-                // Form clears so you can enter new data, but message stays
+                // Form resets for next entry, but success line stays
                 form.reset();
             })
             .catch(err => {
